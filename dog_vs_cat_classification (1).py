@@ -15,18 +15,17 @@ Original file is located at
 
 !kaggle competitions download -c dogs-vs-cats
 
+# unzipping the downloade file
 from zipfile import ZipFile
-
 with ZipFile("dogs-vs-cats.zip","r") as file:
   file.extractall()
-
-
 
 with ZipFile("test1.zip","r") as zip:
   zip.extractall()
 with ZipFile("train.zip","r") as zip2:
   zip2.extractall()
 
+# importing dependencies
 import os
 import sys
 import time
@@ -76,22 +75,22 @@ for image1 in train_data:
 
 # resizing all the images
 path_for_all = "train/"
-# os.mkdir("resized")
+
+#creating a directory named resized
+os.mkdir("resized")
+
 
 output_path = "/content/resized/"
 for every_image in dogg:
   an_image = Image.open(path_for_all + every_image)
   an_image = an_image.resize((224,224))
-  an_image.save(output_path + every_image)
+  an_image.save(output_path + every_image)    #saving all the reshaped dog images
 
 
 for every_image in catt:
   an_image = Image.open(path_for_all + every_image)
   an_image = an_image.resize((224,224))
   an_image.save(output_path + every_image)
-
-
-
 
 
 import glob
@@ -120,6 +119,9 @@ x_data = np.array(list_image)
 
 x_data.shape
 
+
+
+# using MinMaxScalar to scaale the data from 0 - 255
 scaled_data=x_data/255
 label=[]
 for x in dogg:
@@ -129,8 +131,11 @@ for y in catt:
   if y[0:3] =="cat":
     label.append(0)
 
-label[100]
+label[100]     #checking the first 100 labels
 
+
+
+# in this section, transfer learning is used, and the pre-trained model we use is MobileNet_V2
 import tensorflow_hub as hub
 from keras.models import Sequential
 from keras.layers import Dense
